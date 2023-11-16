@@ -1,23 +1,12 @@
 import pika
 import psycopg2
-# from fastapi import FastAPI, HTTPException
-# from tables_db import Aluno, Curso, CursoAluno, Professor
-from typing import List
-from config import log_config
-# import logging
 import json
 import sys
 import os
-from logging.config import dictConfig
-
-dictConfig(log_config)
-
 
 def main():
     # Configuração da conexão RabbitMQ
-    credentials = pika.PlainCredentials('guest', 'guest')
-    parameters = pika.ConnectionParameters('localhost', 5672, '/', credentials)
-    connection = pika.BlockingConnection(parameters)
+    connection = pika.BlockingConnection(pika.ConnectionParameters('crud-rabbitmq-kubernetes_rabbitmq_1'))
     channel = connection.channel()
     # Defina a fila que você deseja consumir
     queue = 'fila_api'

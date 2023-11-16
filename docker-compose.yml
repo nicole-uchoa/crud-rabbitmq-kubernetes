@@ -1,0 +1,49 @@
+version: '3.8'
+
+networks:
+  rotten_net:
+    driver: bridge
+
+services:
+  db:
+    image: postgres
+    networks: 
+      - rotten_net
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234
+
+  rabbitmq:
+    image: rabbitmq:3.11.24-management
+    networks: 
+    - rotten_net
+    environment:
+        RABBITMQ_DEFAULT_USER: guest
+        RABBITMQ_DEFAULT_PASS: guest
+
+  db-receiver:
+    build: 
+      context: ./db-receiver
+      dockerfile: Dockerfile
+    image: db-receiver
+    networks: 
+    - rotten_net
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+      - rabbitmq
+
+  api-publisher:
+    build: 
+      context: ./api-publisher
+      dockerfile: Dockerfile
+    image: api-publisher
+    networks: 
+    - rotten_net
+    ports:
+      - "8000:8000"
+    depends_on:
+      - rabbitmq
+
+  

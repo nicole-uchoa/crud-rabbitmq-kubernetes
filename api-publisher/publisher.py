@@ -1,7 +1,6 @@
 import pika
-from fastapi import FastAPI, HTTPException, Request, Body
+from fastapi import FastAPI
 from tables_db import Operadora, Procedimento, Prestador, Beneficiario
-from typing import List
 from config import log_config
 import logging
 from logging.config import dictConfig
@@ -9,7 +8,7 @@ import json
 dictConfig(log_config)
 
 # Configurar conexão com o RabbitMQ
-connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
+connection = pika.BlockingConnection(pika.ConnectionParameters('crud-rabbitmq-kubernetes_rabbitmq_1'))
 channel = connection.channel()
 
 # Definir a fila para enviar mensagens
@@ -26,8 +25,6 @@ def get_geral():
     return "Hello!!"
 
 # CRUD OPERADORA
-
-
 @app.get("/operadora")
 def get_operadora_all():
     mensagem = '{"metodo": "GET", "query": "SELECT * FROM operadora;"}'

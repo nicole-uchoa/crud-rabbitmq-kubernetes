@@ -6,7 +6,7 @@ import os
 
 def main():
     # Configuração da conexão RabbitMQ
-    connection = pika.BlockingConnection(pika.ConnectionParameters('crud-rabbitmq-kubernetes_rabbitmq_1'))
+    connection = pika.BlockingConnection(pika.ConnectionParameters(host='rabbitmq', port=5672))
     channel = connection.channel()
     # Defina a fila que você deseja consumir
     queue = 'fila_api'

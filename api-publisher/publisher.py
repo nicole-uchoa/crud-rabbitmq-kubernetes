@@ -8,7 +8,10 @@ import json
 dictConfig(log_config)
 
 # Configurar conexão com o RabbitMQ
-connection = pika.BlockingConnection(pika.ConnectionParameters('crud-rabbitmq-kubernetes_rabbitmq_1'))
+# connection = pika.BlockingConnection(pika.ConnectionParameters('crud-rabbitmq-kubernetes_rabbitmq_1'))
+rabbitmq_credentials = pika.PlainCredentials('guest', 'guest')
+rabbitmq_params = pika.ConnectionParameters('rabbitmq', 5672, '/', rabbitmq_credentials)
+connection = pika.BlockingConnection(rabbitmq_params)
 channel = connection.channel()
 
 # Definir a fila para enviar mensagens

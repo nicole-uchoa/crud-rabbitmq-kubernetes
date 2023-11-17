@@ -5,6 +5,17 @@ networks:
     driver: bridge
 
 services:
+  rabbitmq:
+    image: rabbitmq:3.11.24-management
+    networks: 
+    - rotten_net
+    environment:
+        RABBITMQ_DEFAULT_USER: guest
+        RABBITMQ_DEFAULT_PASS: guest
+    ports:
+      - 5672:5672
+      - 15672:15672
+
   db:
     image: postgres
     networks: 
@@ -13,23 +24,15 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 1234
 
-  rabbitmq:
-    image: rabbitmq:3.11.24-management
-    networks: 
-    - rotten_net
-    environment:
-        RABBITMQ_DEFAULT_USER: guest
-        RABBITMQ_DEFAULT_PASS: guest
-
   db-receiver:
     build: 
       context: ./db-receiver
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile-db
     image: db-receiver
     networks: 
     - rotten_net
     ports:
-      - "5000:5000"
+      - 5000:5000
     depends_on:
       - db
       - rabbitmq
@@ -37,13 +40,13 @@ services:
   api-publisher:
     build: 
       context: ./api-publisher
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile-api
     image: api-publisher
     networks: 
     - rotten_net
     ports:
-      - "8000:8000"
+      - 8000:8000
     depends_on:
       - rabbitmq
-
+  
   

@@ -1,0 +1,13 @@
+docker login -u niuchoa -p a77abc4f! docker.io
+
+minikube status
+
+kubectl create deployment 'nome-pod' --image=
+
+kubectl expose deployment 'nome-pod' --type=NodePort --port xx
+
+kubectl get pod
+
+minikube service 'nome-pod' --url
+
+minikube dashboard

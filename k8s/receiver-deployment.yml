@@ -20,9 +20,9 @@ spec:
           imagePullPolicy: Never
           ports:
             - containerPort: 5000
-          # envFrom:
-          #   - configMapRef:
-          #       name: postgres-config
+          envFrom:
+            - configMapRef:
+                name: postgres-config
           resources:
             limits:
               memory: 250Mi

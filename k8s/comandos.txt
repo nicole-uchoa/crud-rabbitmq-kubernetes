@@ -11,3 +11,6 @@ kubectl get pod
 minikube service 'nome-pod' --url
 
 minikube dashboard
+
+kubectl rollout restart deployment
+kubectl logs --previous --tail 10

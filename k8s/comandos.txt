@@ -14,3 +14,10 @@ minikube dashboard
 
 kubectl rollout restart deployment
 kubectl logs --previous --tail 10
+
+kubectl port-forward --address=0.0.0.0 service/rabbitmq-service 5672:5672 &
+kubectl port-forward --address=0.0.0.0 service/rabbitmq-service 15672:15672 &
+
+eval $(minikube docker-env)
+
+history | grep start

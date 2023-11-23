@@ -35,19 +35,19 @@ kind: Service
 metadata:
   name: "receiver"
 spec:
-  ports:
-  - port: 5000
-    protocol: TCP
-    targetPort: 5000
   selector:
-    app: "receiver"
-  type: LoadBalancer
----
-kind: Service
-apiVersion: v1
-metadata:
-  name: postgres
-spec:
-  type: ExternalName
-  externalName: localhost
+    app: "app"
+  ports:
+  - protocol: TCP
+    port: 5000
+    targetPort: 5000
+  # type: LoadBalancer
+# ---
+# kind: Service
+# apiVersion: v1
+# metadata:
+#   name: postgres
+# spec:
+#   type: ExternalName
+#   externalName: localhost
    

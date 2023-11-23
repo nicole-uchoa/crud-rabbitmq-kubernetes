@@ -4,17 +4,29 @@ import json
 import sys
 import os
 
+print("inicio")
 def main():
     # Configuração da conexão RabbitMQ
-    connection = pika.BlockingConnection(pika.ConnectionParameters(host='rabbitmq', port=5672))
-    channel = connection.channel()
+    try:
+        print("inicio")
+        rabbitmq_credentials = pika.PlainCredentials('guest', 'guest')
+        rabbitmq_params = pika.ConnectionParameters('rabbitmq-service', 5672, '/', rabbitmq_credentials)
+        connection = pika.BlockingConnection(rabbitmq_params)
+        channel = connection.channel()
+        print("conexão rabbitmq")
+    except Exception as e:
+        print(e)
     # Defina a fila que você deseja consumir
     queue = 'fila_api'
     channel.queue_declare(queue=queue)
-
+    try:
+        db_conn = connect_db()
+        print("conexão db")
+    except Exception as e:
+        print(e)
     def callback(ch, method, properties, body):
         try:
-            db_conn = connect_db()
+            # db_conn = connect_db()
             cursor = db_conn.cursor()
             metodo, query, data = get_data(body)
             # Executa query
